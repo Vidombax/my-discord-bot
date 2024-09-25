@@ -1,4 +1,4 @@
-# my discord is a game selection bot
+# my discord bot is a game choose helper 
 
 ## Quick install
 1. npm i

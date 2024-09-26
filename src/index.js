@@ -3,6 +3,7 @@ const { Client, IntentsBitField, EmbedBuilder, ActivityType } = require('discord
 const ready = require('./handlers/ready.js');
 const commands = require('./commands/commands.js');
 const registerCommands = require('./register-commands.js');
+const db = require('./handlers/db.js');
 
 const client = new Client({
     intents: [
@@ -14,9 +15,17 @@ const client = new Client({
 });
 
 if (process.env.TEST_MODE === 'ON') {
-    registerCommands();
-    ready(client);
-    commands(client);
+    (async () => {
+        try {
+            await db;
+            registerCommands();
+            ready(client);
+            commands(client);
 
-    client.login(process.env.DISCORD_TOKEN);
+            client.login(process.env.DISCORD_TOKEN);
+        }
+        catch (error) {
+            console.log(error);
+        }
+    })();
 }

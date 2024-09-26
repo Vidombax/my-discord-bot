@@ -23,7 +23,23 @@ const commands = [
     {
         name: 'embed',
         description: 'Sends an embed',
-    }
+    },
+    {
+        name: 'video',
+        description: 'Отправить любое видео из доступных боту',
+    },
+    {
+        name: 'add-video',
+        description: 'Команда добавит боту любое видео, которое он будет отправлять в чат',
+        options: [
+            {
+                name: 'link-to-video',
+                description: 'Ссылка на видео, которое ты хочешь отправить',
+                type: ApplicationCommandOptionType.String,
+                required: true,
+            },
+        ]
+    },
 ];
 
 const rest = new REST({ version: '10'}).setToken(process.env.DISCORD_TOKEN);

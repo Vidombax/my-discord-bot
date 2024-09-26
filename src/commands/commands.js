@@ -23,6 +23,11 @@ module.exports = (client) => {
 
                 interaction.reply({ embeds: [embed] });
                 break;
+            case 'video':
+                break;
+            case 'add-video':
+                const link = interaction.options.get('link-to-video').value;
+                break;
         }
     });
 }

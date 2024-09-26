@@ -1,5 +1,5 @@
 require('dotenv').config();
-const { Client, IntentsBitField, EmbedBuilder } = require('discord.js');
+const { Client, IntentsBitField, EmbedBuilder, ActivityType } = require('discord.js');
 
 const client = new Client({
     intents: [
@@ -12,6 +12,12 @@ const client = new Client({
 
 client.on("ready", (c) => {
     console.log(`${c.user.tag} is ready`);
+
+    client.user.setActivity({
+        name: 'etherite',
+        type: ActivityType.Streaming,
+        url: 'https://www.youtube.com/watch?v=ugONnJsdD-8&ab_channel=BoSinnEdits',
+    });
 });
 
 client.on('interactionCreate', (interaction) => {

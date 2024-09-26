@@ -1,5 +1,8 @@
 require('dotenv').config();
 const { Client, IntentsBitField, EmbedBuilder, ActivityType } = require('discord.js');
+const ready = require('./handlers/ready.js');
+const commands = require('./commands/commands.js');
+const registerCommands = require('./register-commands.js');
 
 const client = new Client({
     intents: [
@@ -10,41 +13,10 @@ const client = new Client({
     ],
 });
 
-client.on("ready", (c) => {
-    console.log(`${c.user.tag} is ready`);
+if (process.env.TEST_MODE === 'ON') {
+    registerCommands();
+    ready(client);
+    commands(client);
 
-    client.user.setActivity({
-        name: 'etherite',
-        type: ActivityType.Streaming,
-        url: 'https://www.youtube.com/watch?v=ugONnJsdD-8&ab_channel=BoSinnEdits',
-    });
-});
-
-client.on('interactionCreate', (interaction) => {
-    if (!interaction.isChatInputCommand()) return;
-
-    switch (interaction.commandName) {
-        case 'add':
-            const num1 = interaction.options.get('first-number').value;
-            const num2 = interaction.options.get('second-number').value;
-
-            interaction.reply(`Sum would be ${num1 + num2}`);
-            break;
-        case 'embed':
-            const embed = new EmbedBuilder().
-            setTitle('Embed title').
-            setDescription('This is an embed description').
-            setColor('Random').
-            addFields({
-                name: 'Field title',
-                value: 'Random value',
-                inline: true
-            });
-
-            interaction.reply({ embeds: [embed] });
-            break;
-    }
-})
-
-
-client.login(process.env.DISCORD_TOKEN);
+    client.login(process.env.DISCORD_TOKEN);
+}

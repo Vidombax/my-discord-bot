@@ -1,13 +1,18 @@
 const {EmbedBuilder} = require("discord.js");
 const axios = require("axios");
+require('dotenv').config();
 module.exports = (client) => {
     const addVideoLink = async (idUser, link) => {
         try {
-            const response = await axios.post('/video', {
-                idUser: idUser,
-                link: link,
-            });
-            console.log(`link ${response.data.link} was added`);
+            if (process.env.TEST_MODE === "ON") {
+                const response = await axios.post('http:/localhost:3000/video', {
+                    idUser: idUser,
+                    link: link,
+                });
+            }
+            else {
+
+            }
         }
         catch (error) {
             console.log(error);
@@ -38,12 +43,12 @@ module.exports = (client) => {
                 interaction.reply({ embeds: [embed] });
                 break;
             case 'video':
+
                 break;
             case 'add-video':
                 const link = interaction.options.get('link-to-video').value;
-                const idUser = 1;
-                addVideoLink(idUser, link);
-                console.log(interaction);
+                addVideoLink(interaction.user.id, link);
+                interaction.reply('Видео было добавлено!');
                 break;
         }
     });

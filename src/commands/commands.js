@@ -43,7 +43,20 @@ module.exports = (client) => {
                 interaction.reply({ embeds: [embed] });
                 break;
             case 'video':
+                (async () => {
+                    try {
+                        if (process.env.TEST_MODE === "ON") {
+                            const response = await axios.get('http:/localhost:3000/video');
+                            interaction.reply(response.data.link);
+                        }
+                        else {
 
+                        }
+                    }
+                    catch (error) {
+                        console.log(error);
+                    }
+                })()
                 break;
             case 'add-video':
                 const link = interaction.options.get('link-to-video').value;

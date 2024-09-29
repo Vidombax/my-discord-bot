@@ -9,8 +9,13 @@ class VideoController {
     }
     async getVideo(req, res) {
         const videos = await db.query('SELECT link FROM linkvideos');
-        const numberVideo = Math.floor(Math.random() * videos.rows.length);
-        res.json(videos.rows[numberVideo]);
+        if (videos.rows.length > 0) {
+            const numberVideo = Math.floor(Math.random() * videos.rows.length);
+            res.json(videos.rows[numberVideo]);
+        }
+        else {
+            res.json('Никаких видео не найдено');
+        }
     }
 }
 

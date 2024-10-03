@@ -1,5 +1,5 @@
 require('dotenv').config();
-const { Client, IntentsBitField, EmbedBuilder, ActivityType } = require('discord.js');
+const { Client, IntentsBitField, EmbedBuilder, ActivityType, Partials} = require('discord.js');
 const ready = require('./handlers/ready.js');
 const commands = require('./commands/commands.js');
 const registerCommands = require('./register-commands.js');
@@ -12,6 +12,7 @@ const client = new Client({
         IntentsBitField.Flags.GuildMessages,
         IntentsBitField.Flags.MessageContent,
     ],
+    partials: [Partials.Channel],
 });
 
 if (process.env.TEST_MODE === 'ON') {

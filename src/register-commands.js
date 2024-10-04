@@ -25,6 +25,10 @@ const commands = [
         description: 'Sends an embed',
     },
     {
+        name: 'get-lucky',
+        description: 'Отправить случайную игру',
+    },
+    {
         name: 'video',
         description: 'Отправить любое видео из доступных боту',
     },

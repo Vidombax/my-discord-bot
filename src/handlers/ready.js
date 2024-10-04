@@ -26,25 +26,24 @@ module.exports = (client) => {
                 type: ActivityType.Streaming,
                 url: 'https://www.youtube.com/watch?v=ugONnJsdD-8&ab_channel=BoSinnEdits',
             });
-
-            cron.schedule('* */30 * * * *', async () => {
-                try {
-                    const channel = await client.channels.fetch(process.env.CHANNEL_ID);
-
-                    if (!channel) {
-                        return console.log("Channel not found");
-                    }
-
-                    if (process.env.TEST_MODE === "ON") {
-                        const response = await axios.get("http:/localhost:3000/video");
-                        channel.send(response.data.link);
-                    }
-                }
-                catch(error) {
-                    console.log(error);
-                }
-            });
-
         }, 1000);
+
+        cron.schedule('0 */10 * * * *', async () => {
+            try {
+                const channel = await client.channels.fetch(process.env.CHANNEL_ID);
+
+                if (!channel) {
+                    return console.log("Channel not found");
+                }
+
+                if (process.env.TEST_MODE === "ON") {
+                    const response = await axios.get("http:/localhost:3000/video");
+                    channel.send(response.data.link);
+                }
+            }
+            catch(error) {
+                console.log(error);
+            }
+        });
     });
 }

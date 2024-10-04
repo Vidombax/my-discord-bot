@@ -60,8 +60,13 @@ module.exports = (client) => {
                 break;
             case 'add-video':
                 const link = interaction.options.get('link-to-video').value;
-                addVideoLink(interaction.user.id, link);
-                interaction.reply('Видео было добавлено!');
+                if (link.includes('https://www.youtube.com/watch')) {
+                    addVideoLink(interaction.user.id, link);
+                    interaction.reply('Видео было добавлено');
+                }
+                else {
+                    interaction.reply('Текст не имеет ссылки на видео с ютуба');
+                }
                 break;
         }
     });

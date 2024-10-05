@@ -1,6 +1,5 @@
 const {EmbedBuilder} = require("discord.js");
 const axios = require("axios");
-const striptags = require('striptags');
 require('dotenv').config();
 module.exports = (client) => {
     const addVideoLink = async (idUser, link) => {
@@ -19,7 +18,7 @@ module.exports = (client) => {
     function createEmbedGame(data) {
         return new EmbedBuilder()
             .setTitle(data.name)
-            .setDescription(striptags(data.description))
+            .setDescription(data.description)
             .setColor('Random')
             .addFields({
                 name: 'Жанр',

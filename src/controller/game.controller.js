@@ -25,7 +25,7 @@ class GameController {
 
                     const game = {
                         name: GetGame.data.name,
-                        description: (GetGame.data.description.length < 4097) ? GetGame.data.description : 'Отсутствует',
+                        description: (GetGame.data.description_raw.length < 4097) ? GetGame.data.description_raw : 'Отсутствует',
                         genre: genres[0],
                         tags: tags,
                         image: GetGame.data.background_image,

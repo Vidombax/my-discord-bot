@@ -1,19 +1,7 @@
 const {ActivityType} = require("discord.js");
 const axios = require("axios");
 const cron = require("node-cron");
-
-async function fetchVideoLink(){
-    try {
-        if (process.env.TEST_MODE === "ON") {
-            const response = await axios.get("http:/localhost:3000/video");
-            return response.data.link;
-        }
-    }
-    catch(error)
-    {
-        console.log(error);
-    }
-}
+require('dotenv').config();
 
 module.exports = (client) => {
     client.on("ready", (c) => {
@@ -36,10 +24,8 @@ module.exports = (client) => {
                     return console.log("Channel not found");
                 }
 
-                if (process.env.TEST_MODE === "ON") {
-                    const response = await axios.get("http:/localhost:3000/video");
-                    channel.send(response.data.link);
-                }
+                const response = await axios.get(`${process.env.NODE_ENV}/video`);
+                channel.send(response.data.link);
             }
             catch(error) {
                 console.log(error);

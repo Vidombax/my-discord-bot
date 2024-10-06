@@ -29,6 +29,18 @@ const commands = [
         description: 'Отправить случайную игру',
     },
     {
+        name: 'find-game-by-name',
+        description: 'Найти игру по названию',
+        options: [
+            {
+                name: 'game-name',
+                description: 'Название игры (До 20 символов)',
+                type: ApplicationCommandOptionType.String,
+                required: true,
+            }
+        ]
+    },
+    {
         name: 'video',
         description: 'Отправить любое видео из доступных боту',
     },

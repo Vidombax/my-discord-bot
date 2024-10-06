@@ -99,6 +99,27 @@ module.exports = (client) => {
                     }
                 })();
                 break;
+            case 'find-game-by-name':
+                (async () => {
+                    try {
+                        const gameName = interaction.options.get('game-name').slice(0, 20);
+                        const response = await axios.get(`${process.env.NODE_ENV}/find-game-by-name`, {
+                            name : gameName,
+                        });
+
+                        if (response.data !== "AxiosError") {
+                            const embed = createEmbedGame(response.data);
+                            interaction.reply({embeds: [embed]});
+                        }
+                        else {
+                            interaction.reply('Такой игры не было найдено!');
+                        }
+                    }
+                    catch (error) {
+                        console.log(error);
+                    }
+                })();
+                break;
         }
     });
 }

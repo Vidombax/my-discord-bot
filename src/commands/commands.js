@@ -163,11 +163,7 @@ module.exports = (client) => {
             }
         }
         else if (interaction.isButton()) {
-            if (interaction.customId === 'button1') {
-                interaction.reply({ content: 'You clicked Button 1!', ephemeral: true });
-            } else if (interaction.customId === 'button2') {
-                interaction.reply({ content: 'You clicked Button 2!', ephemeral: true });
-            }
+
         }
     });
 }

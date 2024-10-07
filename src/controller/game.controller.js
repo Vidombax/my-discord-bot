@@ -17,11 +17,11 @@ class GameController {
                     const tags = [];
 
                     for (let i = 0; i < GetGame.data.genres.length; i++) {
-                        genres.push(GetGame.data.genres[i]);
+                        genres.push(GetGame.data.genres[i].name);
                     }
 
                     for (let i = 0; i < GetGame.data.tags.length; i++) {
-                        tags.push(GetGame.data.tags[i]);
+                        tags.push(GetGame.data.tags[i].name);
                     }
 
                     const game = {
@@ -48,47 +48,55 @@ class GameController {
     }
     async getGameByName(req, res) {
         try {
-            const nameGame = req.body.name;
+            const nameGame = req.query.name;
 
-            const response = await axios.get(`https://api.rawg.io/api/games?key=${process.env.RAWG_API}&search=${nameGame}&search_precise=true`);
+            const response = await axios.get(`https://api.rawg.io/api/games?key=${process.env.RAWG_API}&search=${encodeURIComponent(nameGame)}&search_precise=true`);
 
             const games = [];
             if (response.data.count > 0) {
-                for (let i = 0; i < 3; i++) {
-                    const genres = [];
-                    const tags = [];
-                    const fetchDescription = await axios.get(`https://api.rawg.io/api/games/${response.data.results[i].id}?key=${process.env.RAWG_API}`);
-                    const getDescription = fetchDescription.data.description_raw;
+                for (let i = 0; i < 7; i++) {
+                    if (response.data.results[i].name !== undefined && response.data.results[i].background_image !== null) {
+                        const genres = [];
+                        const tags = [];
+                        const fetchDescription = await axios.get(`https://api.rawg.io/api/games/${response.data.results[i].id}?key=${process.env.RAWG_API}`);
+                        const getDescription = fetchDescription.data.description_raw;
 
-                    for (let i = 0; i < response.data.results[i].genres.length; i++) {
-                        genres.push(response.data.results[i].genres[i]);
+                        for (let i = 0; i < response.data.results[i].genres.length; i++) {
+                            genres.push(response.data.results[i].genres[i].name);
+                        }
+
+                        for (let i = 0; i < response.data.results[i].tags.length; i++) {
+                            tags.push(response.data.results[i].tags[i].name);
+                        }
+
+                        const game = {
+                            name: response.data.results[i].name,
+                            description:
+                                (getDescription.length < 4097)
+                                    ? striptags(
+                                        getDescription.
+                                        replace(/\n/g, '').
+                                        replace(/\r/g, '').
+                                        replace(/#/g, ' ')
+                                    )
+                                    : 'Отсутствует',
+                            genre: genres[0],
+                            tags: tags,
+                            image: response.data.results[i].background_image,
+                        };
+
+                        games.push(game);
+                    }
+                    else {
+                        i++;
                     }
 
-                    for (let i = 0; i < response.data.results[i].tags.length; i++) {
-                        tags.push(response.data.results[i].tags[i]);
-                    }
-
-                    const game = {
-                        name: response.data.results[i].name,
-                        description:
-                            (getDescription.length < 4097)
-                            ? striptags(
-                                getDescription.
-                                    replace(/\n/g, '').
-                                    replace(/\r/g, ''))
-                            : 'Отсутствует',
-                        genre: genres[0],
-                        tags: tags,
-                        image: response.data.results[i].background_image,
-                    };
-
-                    games.push(game);
                 }
 
                 res.json(games);
             }
             else {
-                res.json('Что-то пошло не так');
+                res.json('По такому названию нету игр!');
             }
         }
         catch (error) {

@@ -111,7 +111,6 @@ module.exports = (client) => {
                             if (response.data !== "AxiosError") {
                                 const pages = [];
                                 let currentPage = 0;
-                                console.log(response.data)
                                 for (let i = 0; i < response.data.length; i++) {
                                     const embed = createEmbedGame(response.data[i]);
                                     pages.push(embed);
